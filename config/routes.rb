@@ -1,9 +1,35 @@
 Rails.application.routes.draw do
+  devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+
+  authenticated :user do
+    root to: "home#index", as: "home"
+  end
+  unauthenticated :user do
+    root 'static_pages#index'
+  end
+
+  resources :tweets, except: [:new, :edit] do
+    member do
+      post :reply
+    end
+  end
+  resources :users, except: [:new, :create] do
+    member do
+      get 'followers'
+      get 'following'
+      get 'favorites'
+      get 'retweets'
+    end
+  end
+
+  resources :relationships, only: [:create, :destroy]
+  resources :favorites, only: [:create, :destroy]
+  resources :retweets, only: [:create, :destroy]
+  resources :find_friends, only: :index
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
