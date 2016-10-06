@@ -1,4 +1,8 @@
 class Tweet < ActiveRecord::Base
+  
+def self.search(search)
+  where("tweet_text LIKE ?", "%#{search}%")
+end
 
   self.per_page = 20
 
@@ -12,5 +16,5 @@ class Tweet < ActiveRecord::Base
   counter_culture :user
 
   mount_uploader :media, MediaUploader
-
+  
 end

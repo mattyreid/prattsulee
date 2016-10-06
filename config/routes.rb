@@ -4,7 +4,15 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-
+  
+  # Define Routes for Pages
+  get '/messages' => 'pages#home'
+  get '/index' => 'home#index'
+  get '/notifications' => 'pages#profile'
+  get '/explore' => 'pages#explore'
+  get '/search' => 'pages#search', as:'search'
+  get 'search_results' => 'pages#search_results', as: 'search_results'
+  
   authenticated :user do
     root to: "home#index", as: "home"
   end
@@ -17,6 +25,7 @@ Rails.application.routes.draw do
       post :reply
     end
   end
+  
   resources :users, except: [:new, :create] do
     member do
       get 'followers'
@@ -24,13 +33,13 @@ Rails.application.routes.draw do
       get 'favorites'
       get 'retweets'
     end
-  end
+  end 
 
   resources :relationships, only: [:create, :destroy]
   resources :favorites, only: [:create, :destroy]
   resources :retweets, only: [:create, :destroy]
   resources :find_friends, only: :index
-
+  
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
@@ -79,4 +88,4 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-end
+end 
